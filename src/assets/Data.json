@@ -1,0 +1,70 @@
+{
+    "restaurants": [
+        {
+            "id": 1,
+            "name": "Spicy Bites",
+            "cuisine": "Indian",
+            "rating": 4.5,
+            "menu": [
+                {
+                    "id": 101,
+                    "name": "Paneer Butter Masala",
+                    "price": 220,
+                    "veg": true,
+                    "image": "https://picsum.photos/100/80?1"
+                },
+                {
+                    "id": 102,
+                    "name": "Chicken Biryani",
+                    "price": 250,
+                    "veg": false,
+                    "image": "https://picsum.photos/100/80?2"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "name": "Pizza Planet",
+            "cuisine": "Italian",
+            "rating": 4.2,
+            "menu": [
+                {
+                    "id": 201,
+                    "name": "Margherita Pizza",
+                    "price": 299,
+                    "veg": true,
+                    "image": "https://picsum.photos/100/80?3"
+                },
+                {
+                    "id": 202,
+                    "name": "Pepperoni Pizza",
+                    "price": 349,
+                    "veg": false,
+                    "image": "https://picsum.photos/100/80?4"
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "name": "Burger Hub",
+            "cuisine": "American",
+            "rating": 4.0,
+            "menu": [
+                {
+                    "id": 301,
+                    "name": "Veggie Burger",
+                    "price": 150,
+                    "veg": true,
+                    "image": "https://picsum.photos/100/80?5"
+                },
+                {
+                    "id": 302,
+                    "name": "Cheese Burger",
+                    "price": 180,
+                    "veg": false,
+                    "image": "https://picsum.photos/100/80?6"
+                }
+            ]
+        }
+    ]
+}
