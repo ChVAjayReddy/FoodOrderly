@@ -2,13 +2,19 @@ import Header from "./Header";
 import Banner from "./Banner";
 import RecipeList from "./RecipeList";
 import Footer from "./Footer";
+import React, { useState } from "react";
 
 const Body = () => {
+  const [cart, setcart] = useState(0);
+  function addcart() {
+    setcart((prevcart) => prevcart + 1);
+  }
+
   return (
     <>
-      <Header />
+      <Header cart={cart} />
       <Banner />
-      <RecipeList />
+      <RecipeList addcart={addcart} />
       <Footer />{" "}
     </>
   );

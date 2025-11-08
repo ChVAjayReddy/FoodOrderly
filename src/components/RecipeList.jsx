@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { PRICES } from "../assets/Data";
 
-const RecipeList = () => {
+const RecipeList = (props) => {
+  const { addcart } = props;
   const [list, setlist] = useState([]);
   const [category, setcategory] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -30,7 +32,9 @@ const RecipeList = () => {
     setcategory(json.categories);
   };
   function setcategoryname(event) {
-    setSelectedCategory(event);
+    event === selectedCategory
+      ? setSelectedCategory("")
+      : setSelectedCategory(event);
     console.log(event);
   }
 
@@ -38,45 +42,58 @@ const RecipeList = () => {
     <div>
       <div className="flex flex-row">
         {category.map((category, index) => (
-          <div key={index} className="flex flex-col gap-2">
+          <div
+            onClick={() => setcategoryname(category.strCategory)}
+            key={index}
+            className="flex flex-col gap-2 cursor-pointer items-center justify-center m-4"
+          >
             <img
-              className="rounded-4xl border-8 border-white shadow-lg m-4 h-32 w-32"
+              className="w-20 h-20 rounded-full object-cover m-4 cursor-pointer hover:scale-105 transition-transform duration-300"
+              style={
+                category.strCategory === selectedCategory
+                  ? { border: "4px solid #FF6B00" }
+                  : {}
+              }
               src={category.strCategoryThumb}
             ></img>
-            <p
-              onClick={() => setcategoryname(category.strCategory)}
-              className="text-center"
+            <p className="text-center">{category.strCategory}</p>
+          </div>
+        ))}
+      </div>
+      {list == null ? (
+        <div className="h-40 align-middle flex justify-center items-center">
+          <p className="text-center text-2xl ">
+            {" "}
+            🍽️ No recipes found. Try searching for something else!
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
+          {list.map((recipe, index) => (
+            <div
+              key={index}
+              className="flex flex-col bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
             >
-              {category.strCategory}
-            </p>
-          </div>
-        ))}
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
-        {list.map((recipe, index) => (
-          <div
-            key={index}
-            className="flex flex-col bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
-          >
-            <img src={recipe.strMealThumb} className="rounded"></img>
-            <p className="bg-white rounded-4xl">+</p>
-            <div className="h-10 flex flex-row justify-between">
-              <p className="text-xl font-semibold text-gray-800 truncate">
-                {recipe.strMeal}
+              <img src={recipe.strMealThumb} className="rounded"></img>
+              <button className="bg-[#FF6B00] cursor-pointer" onClick={addcart}>
+                +
+              </button>
+              <div className="h-10 flex flex-row justify-between">
+                <p className="text-xl font-semibold text-gray-800 truncate">
+                  {recipe.strMeal}
+                </p>
+                {index % 2 === 0 ? <p>⭐⭐⭐⭐⭐</p> : <p>⭐⭐⭐⭐</p>}
+              </div>
+              <p>
+                Ingradietns:{recipe.strIngredient1},{recipe.strIngredient2},
+                {recipe.strIngredient3},{recipe.strIngredient4}
               </p>
-              {index % 2 === 0 ? <p>⭐⭐⭐⭐⭐</p> : <p>⭐⭐⭐⭐</p>}
-            </div>
-            <p>
-              Ingradietns:{recipe.strIngredient1},{recipe.strIngredient2},
-              {recipe.strIngredient3},{recipe.strIngredient4}
-            </p>
 
-            <p className="text-[#FF6B00]">
-              Rs.{Math.floor(Math.random() * (250 - 100 + 1)) + 100}/-
-            </p>
-          </div>
-        ))}
-      </div>
+              <p className="text-[#FF6B00]">Rs.{PRICES[index]}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

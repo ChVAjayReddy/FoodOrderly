@@ -1,8 +1,10 @@
 import { FaSearch } from "react-icons/fa";
 import { FaShoppingBag } from "react-icons/fa";
-const Header = () => {
+import React from "react";
+const Header = (props) => {
+  const { cart } = props;
   return (
-    <div className="w-full flex flex-row justify-evenly align-center p-2 shadow-md ">
+    <div className="w-full flex flex-row justify-evenly align-center p-2 shadow-md sticky top-0 bg-white">
       <div className="flex flex-row align-center">
         {" "}
         <img
@@ -20,16 +22,19 @@ const Header = () => {
         <li className="m-10">Contact</li>
       </ul>
       <div className="flex flex-row justify-around  align-center  gap-10  ">
-        <button>
+        <button className="cursor-pointer">
           {" "}
           <FaSearch size={30} color="#FF6B00" />
         </button>
-        <button>
+        <button className="cursor-pointer">
           {" "}
+          {cart >= 1 && (
+            <p className="rounded-full bg-amber-600 text-white">{cart}</p>
+          )}
           <FaShoppingBag size={30} color="#FF6B00" />
         </button>
 
-        <button className="h-min self-center border-2 p-2  border-[#FF6B00] rounded-md">
+        <button className="h-min self-center border-2 p-2 cursor-pointer border-[#FF6B00] rounded-md">
           Login
         </button>
       </div>
