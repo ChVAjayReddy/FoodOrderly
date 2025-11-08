@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { PRICES } from "../assets/Data";
+import { IoMdAdd } from "react-icons/io";
+import { RiSubtractFill } from "react-icons/ri";
+import { MdCurrencyRupee } from "react-icons/md";
 
 const RecipeList = (props) => {
   const { addcart } = props;
   const [list, setlist] = useState([]);
   const [category, setcategory] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [selecteditems, setselecteditems] = useState([]);
+  const [localcart, setlocalcart] = useState([]);
 
   useEffect(() => {
     fetchdata();
@@ -37,6 +42,24 @@ const RecipeList = (props) => {
       : setSelectedCategory(event);
     console.log(event);
   }
+  function handleSelectItem(item) {
+    setselecteditems((prevselecteditems) => [...prevselecteditems, item]);
+    setlocalcart((prevlocalcart) => [...prevlocalcart, 1]);
+  }
+  function handlelocalcart(item, operation) {
+    const ind = selecteditems.indexOf(item);
+    if (operation === "add") {
+      let temp = localcart.map((cart, index) =>
+        ind === index ? cart + 1 : cart
+      );
+      setlocalcart(temp);
+    } else {
+      let temp = localcart.map((cart, index) =>
+        ind === index ? cart - 1 : cart
+      );
+      setlocalcart(temp);
+    }
+  }
 
   return (
     <div>
@@ -61,23 +84,49 @@ const RecipeList = (props) => {
         ))}
       </div>
       {list == null ? (
-        <div className="h-40 align-middle flex justify-center items-center">
+        <div className="h-40 align-middle flex justify-center items-center ">
           <p className="text-center text-2xl ">
             {" "}
             🍽️ No recipes found. Try searching for something else!
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-6 ">
           {list.map((recipe, index) => (
             <div
               key={index}
-              className="flex flex-col bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+              className="flex flex-col bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 relative"
             >
               <img src={recipe.strMealThumb} className="rounded"></img>
-              <button className="bg-[#FF6B00] cursor-pointer" onClick={addcart}>
-                +
-              </button>
+              {selecteditems.includes(index) &&
+              localcart[selecteditems.indexOf(index)] > 0 ? (
+                <div className="flex flex-row absolute left-60 bottom-40 bg-white rounded-full w-20 h-8 items-center justify-center gap-2 shadow-md">
+                  <button
+                    className="rounded-full w-6 h-6 bg-red-300 flex items-center justify-center"
+                    onClick={() => handlelocalcart(index, "sub")}
+                  >
+                    <RiSubtractFill />
+                  </button>
+                  <p>{localcart[selecteditems.indexOf(index)]}</p>
+                  <button
+                    className="rounded-full w-6 h-6 bg-green-300 flex items-center justify-center"
+                    onClick={() => handlelocalcart(index, "add")}
+                  >
+                    <IoMdAdd />
+                  </button>
+                </div>
+              ) : (
+                <button
+                  className="bg-[#FF6B00] cursor-pointer absolute left-70 bottom-40 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-[#e65c00] transition-colors duration-300"
+                  onClick={() => {
+                    addcart();
+                    handleSelectItem(index);
+                  }}
+                >
+                  <IoMdAdd />
+                </button>
+              )}
+
               <div className="h-10 flex flex-row justify-between">
                 <p className="text-xl font-semibold text-gray-800 truncate">
                   {recipe.strMeal}
@@ -89,7 +138,9 @@ const RecipeList = (props) => {
                 {recipe.strIngredient3},{recipe.strIngredient4}
               </p>
 
-              <p className="text-[#FF6B00]">Rs.{PRICES[index]}</p>
+              <p className="text-[#FF6B00]">
+                <MdCurrencyRupee />.{PRICES[index]}
+              </p>
             </div>
           ))}
         </div>

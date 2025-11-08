@@ -6,8 +6,10 @@ import React, { useState } from "react";
 
 const Body = () => {
   const [cart, setcart] = useState(0);
+
   function addcart() {
     setcart((prevcart) => prevcart + 1);
+    console.log(cart);
   }
 
   return (

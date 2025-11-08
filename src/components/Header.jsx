@@ -4,7 +4,7 @@ import React from "react";
 const Header = (props) => {
   const { cart } = props;
   return (
-    <div className="w-full flex flex-row justify-evenly align-center p-2 shadow-md sticky top-0 bg-white">
+    <div className="w-full flex flex-row justify-evenly align-center p-2 shadow-md sticky top-0 bg-white z-50">
       <div className="flex flex-row align-center">
         {" "}
         <img
@@ -26,10 +26,12 @@ const Header = (props) => {
           {" "}
           <FaSearch size={30} color="#FF6B00" />
         </button>
-        <button className="cursor-pointer">
+        <button className="cursor-pointer relative">
           {" "}
           {cart >= 1 && (
-            <p className="rounded-full bg-amber-600 text-white">{cart}</p>
+            <div className="absolute rounded-full bg-white text-[#FF6B00] w-6 h-6 flex items-center left-5  justify-center  border-2 border-[#FF6B00]">
+              {cart}
+            </div>
           )}
           <FaShoppingBag size={30} color="#FF6B00" />
         </button>
