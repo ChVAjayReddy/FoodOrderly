@@ -2,15 +2,12 @@ import React, { useEffect, useState } from "react";
 import { PRICES } from "../assets/Data";
 import { IoMdAdd } from "react-icons/io";
 import { RiSubtractFill } from "react-icons/ri";
-import { MdCurrencyRupee } from "react-icons/md";
-
+import { FaRupeeSign } from "react-icons/fa";
 const RecipeList = (props) => {
-  const { addcart } = props;
+  const { addcart, handleCart, handlelocalcart, cartitems } = props;
   const [list, setlist] = useState([]);
   const [category, setcategory] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [selecteditems, setselecteditems] = useState([]);
-  const [localcart, setlocalcart] = useState([]);
 
   useEffect(() => {
     fetchdata();
@@ -42,27 +39,17 @@ const RecipeList = (props) => {
       : setSelectedCategory(event);
     console.log(event);
   }
-  function handleSelectItem(item) {
-    setselecteditems((prevselecteditems) => [...prevselecteditems, item]);
-    setlocalcart((prevlocalcart) => [...prevlocalcart, 1]);
-  }
-  function handlelocalcart(item, operation) {
-    const ind = selecteditems.indexOf(item);
-    if (operation === "add") {
-      let temp = localcart.map((cart, index) =>
-        ind === index ? cart + 1 : cart
-      );
-      setlocalcart(temp);
-    } else {
-      let temp = localcart.map((cart, index) =>
-        ind === index ? cart - 1 : cart
-      );
-      setlocalcart(temp);
-    }
-  }
 
   return (
     <div>
+      <div className="w-full h-60 bg-gradient-to-r from-[#FF6B00] to-[#FFA500] flex flex-col justify-center items-center rounded-lg my-8">
+        <h1 className="text-4xl text-white font-bold mb-4">
+          Welcome to FoodOrderly!{" "}
+        </h1>
+        <p className="text-lg text-white">
+          Discover delicious recipes and order your favorite meals with ease.
+        </p>
+      </div>
       <div className="flex flex-row">
         {category.map((category, index) => (
           <div
@@ -98,19 +85,29 @@ const RecipeList = (props) => {
               className="flex flex-col bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 relative"
             >
               <img src={recipe.strMealThumb} className="rounded"></img>
-              {selecteditems.includes(index) &&
-              localcart[selecteditems.indexOf(index)] > 0 ? (
+              {cartitems.filter((cart) => cart.id === recipe.idMeal).length ===
+              1 ? (
                 <div className="flex flex-row absolute left-60 bottom-40 bg-white rounded-full w-20 h-8 items-center justify-center gap-2 shadow-md">
                   <button
-                    className="rounded-full w-6 h-6 bg-red-300 flex items-center justify-center"
-                    onClick={() => handlelocalcart(index, "sub")}
+                    className="rounded-full cursor-pointer w-6 h-6 bg-red-300 flex items-center justify-center"
+                    onClick={() => {
+                      handlelocalcart(recipe.idMeal, "sub");
+                      cartitems.filter((cart) => cart.id === recipe.idMeal)[0]
+                        .quantity === 1 && addcart(recipe.idMeal);
+                    }}
                   >
                     <RiSubtractFill />
                   </button>
-                  <p>{localcart[selecteditems.indexOf(index)]}</p>
+
+                  <p>
+                    {
+                      cartitems.filter((cart) => cart.id === recipe.idMeal)[0]
+                        .quantity
+                    }
+                  </p>
                   <button
-                    className="rounded-full w-6 h-6 bg-green-300 flex items-center justify-center"
-                    onClick={() => handlelocalcart(index, "add")}
+                    className="rounded-full cursor-pointer w-6 h-6 bg-green-300 flex items-center justify-center"
+                    onClick={() => handlelocalcart(recipe.idMeal, "add")}
                   >
                     <IoMdAdd />
                   </button>
@@ -119,8 +116,8 @@ const RecipeList = (props) => {
                 <button
                   className="bg-[#FF6B00] cursor-pointer absolute left-70 bottom-40 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-[#e65c00] transition-colors duration-300"
                   onClick={() => {
-                    addcart();
-                    handleSelectItem(index);
+                    addcart(recipe.idMeal);
+                    handleCart(recipe.idMeal, recipe.strMeal, PRICES[index]);
                   }}
                 >
                   <IoMdAdd />
@@ -138,9 +135,9 @@ const RecipeList = (props) => {
                 {recipe.strIngredient3},{recipe.strIngredient4}
               </p>
 
-              <p className="text-[#FF6B00]">
-                <MdCurrencyRupee />.{PRICES[index]}
-              </p>
+              <div className="text-[#FF6B00] font-bold text-2xl mt-2 flex items-center">
+                <FaRupeeSign />.{PRICES[index]}
+              </div>
             </div>
           ))}
         </div>
