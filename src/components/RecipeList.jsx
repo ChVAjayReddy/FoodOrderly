@@ -3,8 +3,14 @@ import { PRICES } from "../assets/Data";
 import { IoMdAdd } from "react-icons/io";
 import { RiSubtractFill } from "react-icons/ri";
 import { FaRupeeSign } from "react-icons/fa";
-const RecipeList = (props) => {
-  const { addcart, handleCart, handlelocalcart, cartitems } = props;
+import { ShimmerCircularImage } from "react-shimmer-effects";
+import { useContext } from "react";
+
+import { useCart } from "../data/CartContext";
+const RecipeList = () => {
+  const { cartitems, cartindex, handleCart, handlelocalcart, addcart } =
+    useCart();
+
   const [list, setlist] = useState([]);
   const [category, setcategory] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -42,14 +48,6 @@ const RecipeList = (props) => {
 
   return (
     <div>
-      <div className="w-full h-60 bg-gradient-to-r from-[#FF6B00] to-[#FFA500] flex flex-col justify-center items-center rounded-lg my-8">
-        <h1 className="text-4xl text-white font-bold mb-4">
-          Welcome to FoodOrderly!{" "}
-        </h1>
-        <p className="text-lg text-white">
-          Discover delicious recipes and order your favorite meals with ease.
-        </p>
-      </div>
       <div className="flex flex-row">
         {category.map((category, index) => (
           <div
@@ -58,7 +56,7 @@ const RecipeList = (props) => {
             className="flex flex-col gap-2 cursor-pointer items-center justify-center m-4"
           >
             <img
-              className="w-20 h-20 rounded-full object-cover m-4 cursor-pointer hover:scale-105 transition-transform duration-300"
+              className=" rounded-full object-cover m-4 cursor-pointer hover:scale-105 transition-transform duration-300"
               style={
                 category.strCategory === selectedCategory
                   ? { border: "4px solid #FF6B00" }

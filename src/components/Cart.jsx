@@ -20,7 +20,6 @@ const Cart = (props) => {
           </tr>
         ))}
       </table>
-
       <p>Total : {cartitems.reduce((recipe, num) => recipe.total + num, 0)}</p>
     </div>
   );
