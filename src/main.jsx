@@ -17,6 +17,7 @@ import RecipeList from "./components/RecipeList.jsx";
 import CartPage from "./components/CartPage.jsx";
 import React, { useState } from "react";
 import { CartProvider } from "./data/CartContext.jsx";
+import Checkout from "./components/Checkout.jsx";
 
 const Main = () => {
   // const [cart, setcart] = useState(0);
@@ -96,6 +97,7 @@ const approot = createBrowserRouter([
         ),
       },
       { path: "/cart", element: <CartPage /> },
+      { path: "/order-success", element: <Checkout /> },
     ],
   },
 ]);
