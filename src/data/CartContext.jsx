@@ -8,6 +8,11 @@ export const CartProvider = ({ children }) => {
   const [cart, setcart] = useState(0);
   const [cartindex, setcartindex] = useState([]);
   const [cartitems, setcartitems] = useState([]);
+  const [isModalopen, setisModalopen] = useState(false);
+  function modalopen() {
+    setisModalopen((previsModalopen) => !previsModalopen);
+    console.log(isModalopen);
+  }
 
   function addcart(ind) {
     if (cartindex.includes(ind)) {
@@ -23,13 +28,20 @@ export const CartProvider = ({ children }) => {
 
     console.log(cart);
   }
-  function handleCart(idMeal, mealname, price) {
+  function emptycart() {
+    setcartitems([]);
+    setcart(0);
+    setcartindex([]);
+  }
+
+  function handleCart(idMeal, mealname, price, imgid) {
     let temp = {};
     temp.id = idMeal;
     temp.name = mealname;
     temp.price = price;
     temp.quantity = 1;
     temp.total = price * 1;
+    temp.img = imgid;
     setcartitems((prevcartitems) => [...prevcartitems, temp]);
   }
   function handlelocalcart(idMeal, operation) {
@@ -58,6 +70,7 @@ export const CartProvider = ({ children }) => {
       setcartitems(carttemp);
     }
   }
+  function carting() {}
 
   return (
     <CartContext.Provider
@@ -68,6 +81,9 @@ export const CartProvider = ({ children }) => {
         addcart,
         handleCart,
         handlelocalcart,
+        emptycart,
+        modalopen,
+        isModalopen,
       }}
     >
       {children}
