@@ -5,49 +5,30 @@ const CartContext = createContext();
 
 // 2️⃣ Create Provider
 export const CartProvider = ({ children }) => {
-  const [cart, setcart] = useState(0);
-  const [cartindex, setcartindex] = useState([]);
-  const [cartitems, setcartitems] = useState([]);
   const [isModalopen, setisModalopen] = useState(false);
+  const [finalcart, setfinalcart] = useState([]);
   function modalopen() {
     setisModalopen((previsModalopen) => !previsModalopen);
     console.log(isModalopen);
   }
 
-  function addcart(ind) {
-    if (cartindex.includes(ind)) {
-      setcart((prevcart) => prevcart - 1);
-      let temp = cartindex.filter((item) => item !== ind);
-      setcartindex(temp);
-
-      return;
-    } else {
-      setcart((prevcart) => prevcart + 1);
-      setcartindex((prevcartindex) => [...prevcartindex, ind]);
-    }
-
-    console.log(cart);
-  }
   function emptycart() {
-    setcartitems([]);
-    setcart(0);
-    setcartindex([]);
+    setfinalcart([]);
   }
 
-  function handleCart(idMeal, mealname, price, imgid) {
-    let temp = {};
-    temp.id = idMeal;
-    temp.name = mealname;
-    temp.price = price;
-    temp.quantity = 1;
-    temp.total = price * 1;
-    temp.img = imgid;
-    setcartitems((prevcartitems) => [...prevcartitems, temp]);
-  }
-  function handlelocalcart(idMeal, operation) {
-    if (operation === "add") {
-      let temp = cartitems.map((cart) =>
-        cart.id === idMeal
+  function carting(id, name, imgurl, price, operation) {
+    if (operation === "new") {
+      let temp = {};
+      temp.id = id;
+      temp.mealname = name;
+      temp.ingurl = imgurl;
+      temp.price = price;
+      temp.quantity = 1;
+      temp.total = price;
+      setfinalcart([...finalcart, temp]);
+    } else if (operation == "add") {
+      let temp = finalcart.map((cart) =>
+        cart.id == id
           ? {
               ...cart,
               quantity: cart.quantity + 1,
@@ -55,10 +36,10 @@ export const CartProvider = ({ children }) => {
             }
           : cart
       );
-      setcartitems(temp);
+      setfinalcart(temp);
     } else {
-      let temp = cartitems.map((cart) =>
-        cart.id === idMeal
+      let temp = finalcart.map((cart) =>
+        cart.id == id
           ? {
               ...cart,
               quantity: cart.quantity - 1,
@@ -66,24 +47,20 @@ export const CartProvider = ({ children }) => {
             }
           : cart
       );
-      let carttemp = temp.filter((cart) => cart.quantity >= 1);
-      setcartitems(carttemp);
+      let temp1 = temp.filter((cart) => cart.quantity >= 1);
+
+      setfinalcart(temp1);
     }
   }
-  function carting() {}
 
   return (
     <CartContext.Provider
       value={{
-        cart,
-        cartindex,
-        cartitems,
-        addcart,
-        handleCart,
-        handlelocalcart,
         emptycart,
         modalopen,
         isModalopen,
+        carting,
+        finalcart,
       }}
     >
       {children}

@@ -6,7 +6,7 @@ import AuthModal from "./AuthModal";
 
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
-  const { cart, modalopen } = useCart();
+  const { modalopen, finalcart } = useCart();
 
   return (
     <header className="w-full p-3 shadow-md sticky top-0 bg-white z-50">
@@ -44,9 +44,9 @@ const Header = () => {
 
           {/* CART */}
           <Link to="/cart" className="relative">
-            {cart > 0 && (
+            {finalcart.length > 0 && (
               <span className="absolute -top-2 -right-2 bg-[#FF6B00] text-white text-xs w-5 h-5 rounded-full flex justify-center items-center">
-                {cart}
+                {finalcart.length}
               </span>
             )}
             <FaShoppingBag size={22} color="#FF6B00" />
