@@ -6,7 +6,7 @@ import AuthModal from "./AuthModal";
 
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
-  const { modalopen, finalcart } = useCart();
+  const { modalopen, finalcart, isuserlogged, loginbtn } = useCart();
 
   return (
     <header className="w-full p-3 shadow-md sticky top-0 bg-white z-50">
@@ -57,7 +57,7 @@ const Header = () => {
             onClick={() => modalopen()}
             className="px-3 py-1.5 border-2 border-[#FF6B00] text-[#FF6B00] rounded-md font-semibold hover:bg-[#FF6B00] hover:text-white transition text-sm sm:text-base"
           >
-            Login
+            {loginbtn}
           </button>
           <AuthModal />
 

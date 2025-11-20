@@ -1,11 +1,67 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useCart } from "../data/CartContext";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import app from "../firebase";
 
 const AuthModal = () => {
-  const { isModalopen, modalopen } = useCart();
+  const { isModalopen, modalopen, setisModalopen, hanldelogin } = useCart();
   const [login, setlogin] = useState(true);
 
+  const [message, setMessage] = useState("");
+  const Email = useRef(null);
+  const Password = useRef(null);
+  const Name = useRef(null);
+
   if (!isModalopen) return null;
+  function handlelogin() {
+    if (login === true) {
+      const auth = getAuth();
+      signInWithEmailAndPassword(
+        auth,
+        Email.current.value,
+        Password.current.value
+      )
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log(user);
+          // ...
+          modalopen();
+          hanldelogin();
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setMessage(errorCode + "-" + errorMessage);
+          console.log(errorCode, errorMessage);
+        });
+    } else {
+      const auth = getAuth();
+      createUserWithEmailAndPassword(
+        auth,
+        Email.current.value,
+        Password.current.value
+      )
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          console.log(user);
+          // ...
+
+          setlogin(false);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setMessage(errorCode + "-" + errorMessage);
+          // ..
+        });
+    }
+  }
 
   return (
     <div className="fixed inset-0 backdrop-blur-sm bg-black/40 flex justify-center items-center z-50 p-4">
@@ -13,7 +69,7 @@ const AuthModal = () => {
         {/* Close button */}
         <button
           onClick={() => modalopen()}
-          className="absolute top-3 right-3 text-white/80 hover:text-white text-xl"
+          className="absolute bg-amber-400 top-3 right-3 text-white/80 hover:text-white text-xl"
         >
           ✖
         </button>
@@ -24,9 +80,13 @@ const AuthModal = () => {
         </h2>
 
         {/* Form */}
-        <form className="flex flex-col gap-4">
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          className="flex flex-col gap-4"
+        >
           {!login && (
             <input
+              ref={Name}
               type="text"
               placeholder="Full Name"
               className="p-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/70 focus:ring-2 focus:ring-[#FF6B00] outline-none"
@@ -34,18 +94,23 @@ const AuthModal = () => {
           )}
 
           <input
+            ref={Email}
             type="email"
             placeholder="Email"
             className="p-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/70 focus:ring-2 focus:ring-[#FF6B00] outline-none"
           />
 
           <input
+            ref={Password}
             type="password"
             placeholder="Password"
             className="p-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/70 focus:ring-2 focus:ring-[#FF6B00] outline-none"
           />
-
-          <button className="mt-2 bg-[#FF6B00] text-white p-3 rounded-lg font-semibold hover:bg-[#e65c00] shadow-lg shadow-[#FF6B0035] transition">
+          <p>{message}</p>
+          <button
+            onClick={() => handlelogin()}
+            className="mt-2 bg-[#FF6B00] text-white p-3 rounded-lg font-semibold hover:bg-[#e65c00] shadow-lg shadow-[#FF6B0035] transition"
+          >
             {login ? "Login" : "Sign Up"}
           </button>
         </form>

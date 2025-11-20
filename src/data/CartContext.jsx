@@ -9,8 +9,12 @@ export const CartProvider = ({ children }) => {
   const [finalcart, setfinalcart] = useState([]);
   function modalopen() {
     setisModalopen((previsModalopen) => !previsModalopen);
-    console.log(isModalopen);
   }
+  function hanldelogin() {
+    setloginbtn("Logout");
+  }
+  const [loginbtn, setloginbtn] = useState("Login");
+  const [isuserlogged, setisuserlogged] = useState(false);
 
   function emptycart() {
     setfinalcart([]);
@@ -61,6 +65,10 @@ export const CartProvider = ({ children }) => {
         isModalopen,
         carting,
         finalcart,
+        setisModalopen,
+        loginbtn,
+        isuserlogged,
+        hanldelogin,
       }}
     >
       {children}
