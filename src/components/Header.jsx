@@ -15,11 +15,11 @@ const Header = () => {
         {/* LOGO + TITLE */}
         <div className="flex items-center gap-2">
           <Link to="/">
-            <img
-              src="/src/assets/Screenshot 2025-11-05 194616.png"
+            {/* <img
+              src="src\assets\Screenshot 2025-11-05 194616.png"
               className="h-10 sm:h-12 md:h-16 object-contain"
               alt="FoodOrderly Logo"
-            />
+            /> */}
 
             <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#FF6B00] whitespace-nowrap">
               FoodOrderly
