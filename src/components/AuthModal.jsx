@@ -8,7 +8,8 @@ import {
 import app from "../firebase";
 
 const AuthModal = () => {
-  const { isModalopen, modalopen, setisModalopen, hanldelogin } = useCart();
+  const { isModalopen, modalopen, setisModalopen, hanldelogin, modalclose } =
+    useCart();
   const [login, setlogin] = useState(true);
 
   const [message, setMessage] = useState("");
@@ -52,7 +53,7 @@ const AuthModal = () => {
           console.log(user);
           // ...
 
-          setlogin(false);
+          setlogin(true);
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -68,8 +69,10 @@ const AuthModal = () => {
       <div className="relative w-full max-w-sm p-6 rounded-xl shadow-2xl bg-white/20 backdrop-blur-xl border border-white/30 animate-fadeIn">
         {/* Close button */}
         <button
-          onClick={() => modalopen()}
-          className="absolute bg-amber-400 top-3 right-3 text-white/80 hover:text-white text-xl"
+          onClick={() => {
+            modalclose();
+          }}
+          className="cursor-pointer absolute bg-amber-400 top-3 right-3 text-white/80 hover:text-white text-xl"
         >
           ✖
         </button>

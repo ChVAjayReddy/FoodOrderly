@@ -7,17 +7,30 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [isModalopen, setisModalopen] = useState(false);
   const [finalcart, setfinalcart] = useState([]);
-  function modalopen() {
-    setisModalopen((previsModalopen) => !previsModalopen);
-  }
-  function hanldelogin() {
-    setloginbtn("Logout");
-  }
+
   const [loginbtn, setloginbtn] = useState("Login");
   const [isuserlogged, setisuserlogged] = useState(false);
 
   function emptycart() {
     setfinalcart([]);
+  }
+  function hanldelogin() {
+    if (loginbtn === "Login") {
+      setloginbtn("Logout");
+    }
+    if (loginbtn === "Logout") {
+      setloginbtn("Login");
+    }
+  }
+  function modalopen() {
+    if (loginbtn === "Logout") {
+      setloginbtn("Login");
+    } else {
+      setisModalopen(!isModalopen);
+    }
+  }
+  function modalclose() {
+    setisModalopen(false);
   }
 
   function carting(id, name, imgurl, price, operation) {
@@ -69,6 +82,7 @@ export const CartProvider = ({ children }) => {
         loginbtn,
         isuserlogged,
         hanldelogin,
+        modalclose,
       }}
     >
       {children}
