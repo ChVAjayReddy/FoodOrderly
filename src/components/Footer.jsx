@@ -2,13 +2,6 @@ import React from "react";
 
 const Footer = () => {
   return (
-    // <div>
-    //   <div className="w-full h-20 bg-gray-200 flex flex-col justify-center items-center mt-8">
-    //     <p className="text-gray-600">
-    //       © 2025 FoodOrderly. All rights reserved.
-    //     </p>
-    //   </div>
-    // </div>
     <footer className="bg-gray-900 text-white py-10 px-6 grid grid-cols-1 md:grid-cols-4 gap-6">
       <div>
         <h2 className="text-2xl font-bold text-orange-500">FoodOrderly</h2>

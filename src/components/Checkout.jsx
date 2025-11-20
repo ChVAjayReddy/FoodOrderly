@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Checkout = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-50 px-4">
+    <div className="flex flex-col items-center justify-center h-1/2 m-6  px-4">
       <div className="bg-white p-10 rounded-2xl shadow-lg text-center max-w-md">
         <div className="text-green-500 text-6xl mb-4">✔</div>
 
