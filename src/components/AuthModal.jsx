@@ -59,6 +59,7 @@ const AuthModal = () => {
           setsignupmsg(
             "You have Successfully created account. Please login now"
           );
+          setMessage("");
           Email.current.value = "";
           Password.current.value = "";
           Name.current.value = "";
