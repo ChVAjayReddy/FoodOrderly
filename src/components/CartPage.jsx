@@ -2,19 +2,58 @@ import { Link } from "react-router";
 import { useCart } from "../data/CartContext";
 import { useState } from "react";
 
+import { auth } from "../firebase";
+import { collection, addDoc, Timestamp, orderBy } from "firebase/firestore";
+import { serverTimestamp } from "firebase/firestore";
+import { db } from "../firebase";
+
 const CartPage = () => {
   const [address, setAddress] = useState(false);
   const { emptycart, finalcart, carting } = useCart();
 
   const grandTotal = finalcart.reduce((acc, item) => acc + item.total, 0);
+  async function addDocument() {
+    try {
+      const utcTimestamp = Date.now(); // Get the UTC timestamp in milliseconds
+
+      // Create a Date object from the timestamp
+      const dateObject = new Date(utcTimestamp);
+
+      // Format the date and time for India (Asia/Kolkata timezone)
+      const indiaTime = dateObject.toLocaleString("en-US", {
+        timeZone: "Asia/Kolkata",
+      });
+      const docRef = await addDoc(collection(db, "users"), {
+        email: auth.currentUser ? auth.currentUser.email : "guest",
+        orderItems: finalcart,
+        totalAmount: grandTotal,
+        createdAt: Timestamp.now(),
+        timestamp: indiaTime,
+        orderStatus: "Pending",
+        orderBy: auth.currentUser ? auth.currentUser.email : "guest",
+        ordertime: serverTimestamp(),
+      });
+      console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  }
 
   return (
     <div className="p-4 sm:p-6 md:p-10">
       {/* Empty Cart */}
       {finalcart.length === 0 ? (
-        <h2 className="text-3xl text-center mt-10 font-semibold">
-          Your cart is empty!
-        </h2>
+        <div className="flex flex-col items-center justify-center h-1/2 m-6  px-4">
+          <h2 className="text-3xl text-center mt-10 font-semibold">
+            Your cart is empty! Please add some items to your cart.
+          </h2>
+          <Link
+            to="/"
+            className="bg-orange-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-orange-600 transition-all   mt-6"
+          >
+            Back to Home
+          </Link>
+        </div>
       ) : (
         <>
           {/* Cart Items List */}
@@ -138,7 +177,10 @@ const CartPage = () => {
               <div className="flex justify-center mt-6">
                 <Link to="/order-success">
                   <button
-                    onClick={() => emptycart()}
+                    onClick={() => {
+                      emptycart();
+                      addDocument();
+                    }}
                     className="bg-[#FF6B00] text-white px-8 py-3 rounded-lg text-xl font-semibold hover:bg-[#e65c00] transition"
                   >
                     Complete Order

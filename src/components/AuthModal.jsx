@@ -6,11 +6,19 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { RxCross1 } from "react-icons/rx";
-import app from "../firebase";
+// import app from "../firebase";
+import { app } from "../firebase";
 
 const AuthModal = () => {
-  const { isModalopen, modalopen, setisModalopen, hanldelogin, modalclose } =
-    useCart();
+  const {
+    isModalopen,
+    modalopen,
+    setisModalopen,
+    hanldelogin,
+    modalclose,
+    setisuserlogged,
+    isuserlogged,
+  } = useCart();
   const [login, setlogin] = useState(true);
 
   const [message, setMessage] = useState("");
@@ -35,6 +43,7 @@ const AuthModal = () => {
           // ...
           modalopen();
           hanldelogin();
+          setisuserlogged(user.email);
         })
         .catch((error) => {
           const errorCode = error.code;

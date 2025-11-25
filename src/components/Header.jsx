@@ -3,12 +3,43 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../data/CartContext";
 import AuthModal from "./AuthModal";
+import { collection, getDocs } from "firebase/firestore";
+import MyOrders from "./MyOders";
+import { db } from "../firebase";
+import { auth } from "../firebase";
 
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
-  const { modalopen, finalcart, isuserlogged, loginbtn, hanldelogin } =
-    useCart();
+  const {
+    modalopen,
+    finalcart,
+    isuserlogged,
+    loginbtn,
+    hanldelogin,
+    setmyorders,
+    myorders,
+  } = useCart();
+  async function MyOrders() {
+    const querySnapshot = await getDocs(collection(db, "users"));
 
+    let temp = querySnapshot.docs;
+    if (auth.currentUser.email === "admin@foodorderly.in") {
+      setmyorders(temp);
+      return;
+    }
+    let oderslist = temp.filter(
+      (doc) =>
+        doc._document.data.value.mapValue.fields.email.stringValue ===
+        auth.currentUser.email
+    );
+    setmyorders(oderslist);
+
+    // querySnapshot.docs.forEach((docs) => {
+    //   auth.currentUser.email === doc.data().email
+    //     ? console.log(typeof doc.data())
+    //     : null;
+    // });
+  }
   return (
     <header className="w-full p-3 shadow-md sticky top-0 bg-white z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -29,6 +60,13 @@ const Header = () => {
         <nav className="hidden md:flex items-center gap-6">
           <Link className="text-lg hover:text-[#FF6B00] transition">Home</Link>
           <Link className="text-lg hover:text-[#FF6B00] transition">Menu</Link>
+          <Link
+            className="text-lg hover:text-[#FF6B00] transition"
+            onClick={() => MyOrders()}
+            to="/myorders"
+          >
+            My Orders
+          </Link>
           <Link className="text-lg hover:text-[#FF6B00] transition">
             Contact
           </Link>
@@ -68,6 +106,13 @@ const Header = () => {
         <div className="md:hidden mt-3 flex flex-col gap-3 text-lg font-medium">
           <Link className="hover:text-[#FF6B00]">Home</Link>
           <Link className="hover:text-[#FF6B00]">Menu</Link>
+          <Link
+            className="text-lg hover:text-[#FF6B00] transition"
+            onClick={() => MyOrders()}
+            to="/myorders"
+          >
+            My Orders
+          </Link>
           <Link className="hover:text-[#FF6B00]">Contact</Link>
         </div>
       )}

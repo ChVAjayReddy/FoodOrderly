@@ -7,9 +7,10 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [isModalopen, setisModalopen] = useState(false);
   const [finalcart, setfinalcart] = useState([]);
+  const [myorders, setmyorders] = useState([]);
 
   const [loginbtn, setloginbtn] = useState("Login");
-  const [isuserlogged, setisuserlogged] = useState(false);
+  const [isuserlogged, setisuserlogged] = useState("guest");
 
   function emptycart() {
     setfinalcart([]);
@@ -83,6 +84,9 @@ export const CartProvider = ({ children }) => {
         isuserlogged,
         hanldelogin,
         modalclose,
+        setisuserlogged,
+        setmyorders,
+        myorders,
       }}
     >
       {children}

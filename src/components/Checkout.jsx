@@ -1,10 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useCart } from "../data/CartContext";
 
 const Checkout = () => {
+  const { isuserlogged } = useCart();
+
   return (
     <div className="flex flex-col items-center justify-center h-1/2 m-6  px-4">
       <div className="bg-white p-10 rounded-2xl shadow-lg text-center max-w-md">
+        <p>Thank you {isuserlogged}</p>
         <div className="text-green-500 text-6xl mb-4">✔</div>
 
         <h1 className="text-3xl font-bold mb-2">Order Placed!</h1>
