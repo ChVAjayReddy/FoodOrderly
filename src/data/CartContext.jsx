@@ -1,9 +1,7 @@
 import React, { createContext, useState, useContext } from "react";
 
-// 1️⃣ Create Context
 const CartContext = createContext();
 
-// 2️⃣ Create Provider
 export const CartProvider = ({ children }) => {
   const [isModalopen, setisModalopen] = useState(false);
   const [finalcart, setfinalcart] = useState([]);
@@ -94,5 +92,4 @@ export const CartProvider = ({ children }) => {
   );
 };
 
-// 3️⃣ Custom Hook (for cleaner imports)
 export const useCart = () => useContext(CartContext);

@@ -14,12 +14,10 @@ const CartPage = () => {
   const grandTotal = finalcart.reduce((acc, item) => acc + item.total, 0);
   async function addDocument() {
     try {
-      const utcTimestamp = Date.now(); // Get the UTC timestamp in milliseconds
+      const utcTimestamp = Date.now();
 
-      // Create a Date object from the timestamp
       const dateObject = new Date(utcTimestamp);
 
-      // Format the date and time for India (Asia/Kolkata timezone)
       const indiaTime = dateObject.toLocaleString("en-US", {
         timeZone: "Asia/Kolkata",
       });
@@ -41,7 +39,6 @@ const CartPage = () => {
 
   return (
     <div className="p-4 sm:p-6 md:p-10">
-      {/* Empty Cart */}
       {finalcart.length === 0 ? (
         <div className="flex flex-col items-center justify-center h-1/2 m-6  px-4">
           <h2 className="text-3xl text-center mt-10 font-semibold">
@@ -56,7 +53,6 @@ const CartPage = () => {
         </div>
       ) : (
         <>
-          {/* Cart Items List */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {finalcart.map((item, index) => (
               <div
@@ -69,7 +65,6 @@ const CartPage = () => {
                   className="w-24 h-24 rounded-lg object-cover"
                 />
 
-                {/* ==== DETAILS ==== */}
                 <div className="flex-1">
                   <p className="text-lg font-semibold">{item.mealname}</p>
                   <p className="text-gray-600 text-sm">Price: ₹{item.price}</p>
@@ -77,7 +72,6 @@ const CartPage = () => {
                     Total: ₹{item.total}
                   </p>
 
-                  {/* Quantity Controls */}
                   <div className="mt-2 flex items-center gap-3">
                     <button
                       className="w-7 h-7 bg-red-400 text-white rounded-full flex items-center justify-center"
@@ -116,14 +110,12 @@ const CartPage = () => {
             ))}
           </div>
 
-          {/* Grand Total Section */}
           <div className="text-center mt-10">
             <h2 className="text-2xl font-bold">
               Grand Total: <span className="text-[#FF6B00]">₹{grandTotal}</span>
             </h2>
           </div>
 
-          {/* Checkout Button */}
           <div className="flex justify-center mt-6">
             <button
               className="bg-[#FF6B00] text-white px-6 py-3 rounded-lg text-xl font-semibold shadow-md hover:bg-[#e65c00] transition"
@@ -135,7 +127,6 @@ const CartPage = () => {
             </button>
           </div>
 
-          {/* Address Form */}
           {address && (
             <div className="mt-10 bg-white p-6 shadow-lg rounded-xl max-w-2xl mx-auto ">
               <h2 className="text-3xl font-semibold mb-6 text-center ">
@@ -173,7 +164,6 @@ const CartPage = () => {
                 </div>
               </form>
 
-              {/* Complete Order Button */}
               <div className="flex justify-center mt-6">
                 <Link to="/order-success">
                   <button

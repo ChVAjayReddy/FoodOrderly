@@ -530,7 +530,6 @@ const RecipeList = () => {
   }, [selectedCategory]);
 
   const fetchdata = async () => {
-    // Set loading state to false right before fetching data
     setrecipeloading(false);
     const data = await fetch(
       "https://www.themealdb.com/api/json/v1/1/search.php?s=" +
@@ -539,7 +538,7 @@ const RecipeList = () => {
 
     const json = await data.json();
     setlist(json.meals);
-    // Set loading state to true after data is fetched
+
     setrecipeloading(true);
   };
 
@@ -548,7 +547,6 @@ const RecipeList = () => {
   }, []);
 
   const fetchdcategory = async () => {
-    // Set loading state to false right before fetching data
     setcategoryloading(false);
     const datac = await fetch(
       "https://www.themealdb.com/api/json/v1/1/categories.php"
@@ -556,7 +554,7 @@ const RecipeList = () => {
 
     const json = await datac.json();
     setcategory(json.categories);
-    // Set loading state to true after data is fetched
+
     setcategoryloading(true);
   };
 
@@ -567,12 +565,8 @@ const RecipeList = () => {
     console.log(event);
   }
 
-  // --- Background White Implementation ---
-
   return (
-    // Main container with a plain white background
     <div className="min-h-screen p-4 bg-white">
-      {/* Category Bar - Plain White/Light Shadow */}
       <div className=" top-0 z-10 w-full overflow-x-auto whitespace-nowrap px-3 sm:px-4 py-4 mb-4 bg-white rounded-xl shadow-lg border border-gray-100 scrollbar-hide">
         <div className="flex gap-4 sm:gap-6">
           {categoryloading ? (
@@ -599,20 +593,18 @@ const RecipeList = () => {
                     border-4 transition
                     ${
                       cat.strCategory === selectedCategory
-                        ? "border-orange-500 shadow-md" // Updated to a slightly deeper orange
+                        ? "border-orange-500 shadow-md"
                         : "border-gray-200"
                     }
                   `}
                 />
 
-                {/* Text color changed to dark gray */}
                 <p className="mt-2 text-xs sm:text-sm md:text-base font-semibold text-gray-800 text-center">
                   {cat.strCategory}
                 </p>
               </div>
             ))
           ) : (
-            // Shimmer for categories during loading
             <div
               className="flex flex-row items-center min-w-[70px] sm:min-w-[90px] cursor-pointer 
             transition duration-200 gap-4 sm:gap-6"
@@ -627,9 +619,7 @@ const RecipeList = () => {
           )}
         </div>
       </div>
-      {/* --- Category Bar End --- */}
 
-      {/* Recipe List */}
       {recipeloading ? (
         list == null ? (
           <div className="h-40 align-middle flex justify-center items-center bg-gray-50 rounded-xl shadow-md border border-gray-200 p-8 m-4">
@@ -641,19 +631,16 @@ const RecipeList = () => {
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 p-4">
             {list.map((recipe, index) => (
-              // Recipe Card - Solid White Background
               <div
                 key={index}
                 className="relative flex flex-col bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
               >
-                {/* Recipe Image */}
                 <img
                   src={recipe.strMealThumb}
                   className="rounded-t-xl h-36 w-full object-cover"
                   alt={recipe.strMeal}
                 />
 
-                {/* Cart Buttons (Kept for contrast) */}
                 {finalcart.filter((c) => c.id === recipe.idMeal).length ===
                 1 ? (
                   <div className="absolute top-3 right-3 bg-white flex items-center gap-2 py-1 px-2 rounded-full shadow-md border border-gray-200">
@@ -713,24 +700,21 @@ const RecipeList = () => {
 
                 <div className="p-3">
                   <div className="flex justify-between">
-                    {/* Text color changed to dark gray */}
                     <p className="text-lg font-semibold truncate text-gray-800">
                       {recipe.strMeal}
                     </p>
-                    {/* Stars kept visible */}
+
                     <p className="hidden md:block lg:block text-yellow-500">
                       {index % 2 === 0 ? "⭐⭐⭐⭐⭐" : "⭐⭐⭐⭐"}
                     </p>
                   </div>
 
-                  {/* Text color changed to mid gray */}
                   <p className="text-gray-600 text-sm mt-1">
                     Ingredients: {recipe.strIngredient1},{" "}
                     {recipe.strIngredient2}, {recipe.strIngredient3},{" "}
                     {recipe.strIngredient4}
                   </p>
 
-                  {/* Price color kept visible */}
                   <div className="text-orange-500 font-bold text-xl mt-3 flex items-center">
                     <FaRupeeSign />
                     {PRICES[index]}
@@ -741,9 +725,7 @@ const RecipeList = () => {
           </div>
         )
       ) : (
-        // Shimmer for recipes during loading
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
-          {/* Shimmer backgrounds set to white/light gray for continuity */}
           <ShimmerThumbnail
             height={250}
             rounded

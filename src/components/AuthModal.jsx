@@ -85,7 +85,6 @@ const AuthModal = () => {
   return (
     <div className="fixed inset-0 backdrop-blur-sm bg-black/40 flex justify-center items-center z-50 p-4">
       <div className="relative w-full max-w-sm p-6 rounded-xl shadow-2xl bg-white/20 backdrop-blur-xl border border-white/30 animate-fadeIn">
-        {/* Close button */}
         <button
           onClick={() => {
             modalclose();
@@ -97,7 +96,6 @@ const AuthModal = () => {
           <RxCross1 />
         </button>
 
-        {/* Title */}
         <h2 className="text-3xl font-bold text-center mb-6 text-white drop-shadow-md">
           {login ? "Login" : "Create Account"}
         </h2>
@@ -108,7 +106,7 @@ const AuthModal = () => {
             </p>
           </div>
         )}
-        {/* Form */}
+
         <form
           onSubmit={(e) => e.preventDefault()}
           className="flex flex-col gap-4"
@@ -150,7 +148,6 @@ const AuthModal = () => {
           </button>
         </form>
 
-        {/* Switch toggle */}
         <p className="text-center text-sm text-white/80 mt-4 ">
           {login ? "Don't have an account?" : "Already have an account?"}
           <button
