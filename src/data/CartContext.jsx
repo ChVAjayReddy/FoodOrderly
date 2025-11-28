@@ -1,4 +1,7 @@
 import React, { createContext, useState, useContext } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { auth } from "../firebase";
+import { db } from "../firebase";
 
 const CartContext = createContext();
 
@@ -14,11 +17,15 @@ export const CartProvider = ({ children }) => {
     setfinalcart([]);
   }
   function hanldelogin() {
+    // Toggle login button text. When logging out, clear user-specific data.
     if (loginbtn === "Login") {
       setloginbtn("Logout");
-    }
-    if (loginbtn === "Logout") {
+    } else if (loginbtn === "Logout") {
+      // User is logging out: reset states that should be cleared on logout
       setloginbtn("Login");
+      setisuserlogged("guest");
+      setmyorders([]);
+      setfinalcart([]);
     }
   }
   function modalopen() {
@@ -31,7 +38,32 @@ export const CartProvider = ({ children }) => {
   function modalclose() {
     setisModalopen(false);
   }
+  async function MyOrders() {
+    const querySnapshot = await getDocs(collection(db, "users"));
 
+    let temp = querySnapshot.docs;
+    if (loginbtn === "Login") {
+      setmyorders([]);
+      return;
+    }
+    if (auth.currentUser.email === "admin@foodorderly.in") {
+      setmyorders(temp);
+      return;
+    }
+
+    let oderslist = temp.filter(
+      (doc) =>
+        doc._document.data.value.mapValue.fields.email.stringValue ===
+        auth.currentUser.email
+    );
+    setmyorders(oderslist);
+
+    // querySnapshot.docs.forEach((docs) => {
+    //   auth.currentUser.email === doc.data().email
+    //     ? console.log(typeof doc.data())
+    //     : null;
+    // });
+  }
   function carting(id, name, imgurl, price, operation) {
     if (operation === "new") {
       let temp = {};
@@ -85,6 +117,7 @@ export const CartProvider = ({ children }) => {
         setisuserlogged,
         setmyorders,
         myorders,
+        MyOrders,
       }}
     >
       {children}

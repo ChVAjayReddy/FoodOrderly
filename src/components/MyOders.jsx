@@ -1,7 +1,7 @@
 import { useCart } from "../data/CartContext";
 
 const MyOrders = () => {
-  const { myorders } = useCart();
+  const { myorders, MyOrders } = useCart();
   console.log(myorders);
 
   const extractValue = (fieldValue) => {
